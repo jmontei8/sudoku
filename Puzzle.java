@@ -1,4 +1,4 @@
-
+import java.util.*;
 /**
  * Write a description of class Puzzle here.
  * 
@@ -136,7 +136,7 @@ public class Puzzle
     public int[][] choosePuzzle()
     {
         // put your code here
-        int chosen=(int)Math.random()*5;
+        int chosen=(int)(Math.random()*5);
         if (chosen==0){
             return puzzle1;
         }
@@ -184,5 +184,21 @@ public class Puzzle
         // put your code here
         user=p;
 
+    }
+    public void print()
+    {
+        // put your code here
+        System.out.print("===Here are the arrays===\n");
+        System.out.println(Arrays.deepToString(puzzle1));
+        System.out.println(Arrays.deepToString(solution1));
+        System.out.println(Arrays.deepToString(puzzle2));
+        System.out.println(Arrays.deepToString(solution2));
+        System.out.println(Arrays.deepToString(puzzle3));
+        System.out.println(Arrays.deepToString(solution3));
+        System.out.println(Arrays.deepToString(puzzle4));
+        System.out.println(Arrays.deepToString(solution4));
+        System.out.println(Arrays.deepToString(puzzle5));
+        System.out.println(Arrays.deepToString(solution5));
+        
     }
 }
