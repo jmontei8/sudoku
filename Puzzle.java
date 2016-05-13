@@ -136,7 +136,7 @@ public class Puzzle
     public int[][] choosePuzzle()
     {
         // put your code here
-        int chosen=(int)Math.random()*5;
+        int chosen=(int)(Math.random()*5);
         if (chosen==0){
             return puzzle1;
         }
