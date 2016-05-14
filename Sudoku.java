@@ -12,12 +12,14 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
     private int num;
     private int mouseX,mouseY;
     private int selection;
-    private Button button1;
-    private Button button2;
-    private Button button3;
+    private Button playBtn;
+    private Button startBtn;
+    private Button enterBtn;
     private Button button4;
     private Button button5;
     private Button button6;
+    private boolean gameStarted;
+    private boolean enterAllowed;
     private TextField textField1;
     private TextField textField2;
     private TextField textField3;
@@ -26,58 +28,81 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
     private Choice drop3 = new Choice();
     private int[][] puzzleArray=new int[9][9];
     private Puzzle puz=new Puzzle();
+    private boolean[][] takenSpot = new boolean[9][9];
+    private int selRow;
+    private int selCol;
+    private int selNum;
+    private int selCol1;
+    private int selRow1;
+    private AudioClip song;
+    private URL songPath;
+    public class Sound // Holds one audio file
+    {
+        private AudioClip song; // Sound player
+        private URL songPath; // Sound path
+        Sound(String filename)
+        {
+            try
+            {
+                songPath = new URL(getCodeBase(),filename); // Get the Sound URL
+                song = Applet.newAudioClip(songPath); // Load the Sound
+            }
+            catch(Exception e){} // Satisfy the catch
+        }
+
+        public void playSound()
+        {
+            song.loop(); // Play 
+        }
+
+        public void stopSound()
+        {
+            song.stop(); // Stop
+        }
+
+        public void playSoundOnce()
+        {
+            song.play(); // Play only once
+        }
+    }
     public void init()
     { 
         screen = 0;
         setSize(775,585);
         selection = 0;
         num = 1;
-        button1 = new Button("START");
-        add(button1);
-        button1.addActionListener(this);
-        button2 = new Button("RESTART");
-        add(button2);
-        button2.addActionListener(this); 
-        button3 = new Button("SUBMIT");
-        add(button3);
-        button3.addActionListener(this);
 
-        button4 = new Button("PLAY");
-        add(button4);
-        button4.addActionListener(this);
+        playBtn = new Button("PLAY");
+        add(playBtn);
+        playBtn.addActionListener(this); 
 
-        button5 = new Button("ENTER");
-        add(button5);
-        button5.addActionListener(this);
+        startBtn = new Button("START");
+        add(startBtn);
+        startBtn.addActionListener(this);
 
-        button6 = new Button("Back To Instructions >>>");
-        add(button6);
-        button6.addActionListener(this);
-        //         textField1 = new TextField("ROW HERE ");
-        //         add(textField1);
-        //         textField2 = new TextField("COLUMN HERE ");
-        //         add(textField2);
-        //         textField3 = new TextField("NUMBER HERE");
-        //         add(textField3);
-        drop.addItem("1");
-        drop.addItem("2");
-        drop.addItem("3");
-        drop.addItem("4");
-        drop.addItem("5");
-        drop.addItem("6");
-        drop.addItem("7");
-        drop.addItem("8");
-        drop.addItem("9");
+        enterBtn = new Button("ENTER");
+        add(enterBtn);
+        enterBtn.addActionListener(this);
+
+        drop.addItem("1r");
+        drop.addItem("2r");
+        drop.addItem("3r");
+        drop.addItem("4r");
+        drop.addItem("5r");
+        drop.addItem("6r");
+        drop.addItem("7r");
+        drop.addItem("8r");
+        drop.addItem("9r");
         add(drop);
-        drop2.addItem("1");
-        drop2.addItem("2");
-        drop2.addItem("3");
-        drop2.addItem("4");
-        drop2.addItem("5");
-        drop2.addItem("6");
-        drop2.addItem("7");
-        drop2.addItem("8");
-        drop2.addItem("9");
+        drop2.addItem("1c");
+        drop2.addItem("2c");
+        drop2.addItem("3c");
+        drop2.addItem("4c");
+        drop2.addItem("5c");
+        drop2.addItem("6c");
+        drop2.addItem("7c");
+        drop2.addItem("8c");
+        drop2.addItem("9c");
         add(drop2);
         drop3.addItem("1");
         drop3.addItem("2");
@@ -89,7 +114,11 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         drop3.addItem("8");
         drop3.addItem("9");
         add(drop3);
+
         puzzleArray=puz.getPuzzle();
+        
+        Sound testsong = new Sound("Video_Game_Themes_-_Killer_Instinct.mid");
+        testsong.playSoundOnce();
     }
 
     public void mouseExited(MouseEvent me)
@@ -132,17 +161,24 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
     public void actionPerformed(ActionEvent ae) {
         selection = 0;
 
-        if(ae.getSource().equals(button4)){
-            selection = 4;
+        if(ae.getSource().equals(playBtn)){
+            screen = 1;
+            enterAllowed = false;
         }
-        if(ae.getSource().equals(button1)){
+        if(ae.getSource().equals(startBtn))
+        {
             selection = 1;
+            gameStarted=true;
+            enterAllowed = false;
         }
-        if(ae.getSource().equals(button6)){
-            selection = 6;
-        }
-        if(ae.getSource().equals(button2)){
-            selection = 2;
+        if(ae.getSource().equals(enterBtn))
+        {
+            enterAllowed = true;
+            if(gameStarted == true)
+            {
+                selection = 1;
+            }
+
         }
         repaint(); 
     }
@@ -151,21 +187,17 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
     {   
         if(screen == 0)
         {
+            startBtn.setLocation(-100,-100);
+            enterBtn.setLocation(-100,-100);
+            drop.setLocation(-100,-100);
+            drop2.setLocation(-100,-100);
+            drop3.setLocation(-100,-100);
             g.setColor(Color.BLACK);
             g.setFont(new Font("TimesRoman", Font.BOLD, 42)); 
             g.drawString("INSTRUCTIONS",35,36);
             g.drawString("INSTRUCTIONS",35,35);
             g.drawString("INSTRUCTIONS",36,35);
             g.drawString("INSTRUCTIONS",35,35);
-
-            button1.setLocation(11110, 553);
-            button2.setLocation(21150, 553);
-            button3.setLocation(61112, 190);
-            button6.setLocation(61112, 190);
-            button5.setLocation(61112, 190);
-            drop.setLocation(11650,230);
-            drop2.setLocation(11650,270);
-            drop3.setLocation(11650,310);
 
             g.setFont(new Font("TimesRoman", Font.BOLD, 20)); 
             g.drawString("|[1]| If you do not know how to play sudoku please learn and then come back",35,100);
@@ -175,17 +207,12 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
             g.drawString("|[5]| Click >Enter< to sumbit the number",35,300);
             g.drawString("|[6]| To Sumbit and check your puzzle click >Submit<",35,350);
             setSize(775,375);
-            button4.setLocation(650, 10);
-            
-            if(selection == 4)
-            {
-                screen = 1;
-            }
+            playBtn.setLocation(650, 10);
 
         }
         if(screen == 1)
         {
-            button4.setLocation(611150, 10);
+            playBtn.setLocation(-100,-100);
             setSize(775,585);
             g.setColor(Color.WHITE);
             g.fillRect(0,0,10000,10000);
@@ -223,13 +250,13 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
             num = 1;
             for(int x = 105; x < 555; x+= 50)
             {
-                g.drawString("Row " + num, x,95);
+                g.drawString("Row " + num + "r", x,95);
                 num++;
             }
             num = 1;
             for(int x = 130; x < 560; x+= 50)
             {
-                g.drawString("Column " + num, 30,x);
+                g.drawString("Column " + num + "c", 30,x);
                 num++;
             }
             g.drawLine(100,101,550,101);
@@ -240,16 +267,7 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
             g.setColor(Color.BLACK);
 
             g.drawString("By: Jovan, John, Ronan, and Miki",65,60);
-            button1.setLocation(465, 15);
-            button2.setLocation(550, 15);
-            button3.setLocation(650, 15);
-            button5.setLocation(600, 350);
-            button6.setLocation(560, 550);
-            //             this.textField1.setLocation(455, 130);
-            //             this.textField2.setLocation(560, 130);
-            //             this.textField3.setLocation(506, 170);
 
-            
             g.setFont(new Font("TimesRoman", Font.BOLD, 20)); 
             g.drawString("Row:",600,150);
             drop.setLocation(650,130);
@@ -274,14 +292,9 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
             g.setColor(Color.BLACK);
             g.drawLine(33,42,402,42);
             g.setFont(new Font("TimesRoman", Font.BOLD, 30)); 
-            //             g.drawString("5", 118,135);
-            //             g.drawString("5", 118,185);
-            //             g.drawString("5", 168,135);
-            if(selection == 6)
-            {
-                screen = 0;
-            }
 
+            startBtn.setLocation(465, 15);
+            enterBtn.setLocation(600, 350);
             if(selection == 1)
             {
                 int x=118;
@@ -299,17 +312,210 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
                     x=118;
                     y+=50;
                 }
-            }
-            if(selection == 2 )
-            {
-                puzzleArray=puz.getPuzzle();
-            }
-            if(selection == 3)
-            {
-                //check the userArray and the solution array using ronans checker class
-            }
 
-            //ctr + space
+                if(enterAllowed == true)
+                {
+                    selNum = 0;
+                    selRow = 0;
+                    selCol = 0;
+                    selRow1 = 0;
+                    selCol1 = 0;
+                    if(drop.getSelectedItem().equals("1r"))
+                    {
+                        selRow = 1;
+                    }
+                    else if(drop.getSelectedItem().equals("2r"))
+                    {
+                        selRow = 2;
+                    }
+                    else if(drop.getSelectedItem().equals("3r"))
+                    {
+                        selRow = 3;
+                    }
+                    else if(drop.getSelectedItem().equals("4r"))
+                    {
+                        selRow = 4;
+                    }
+                    else if(drop.getSelectedItem().equals("5r"))
+                    {
+                        selRow = 5;
+                    }
+                    else if(drop.getSelectedItem().equals("6r"))
+                    {
+                        selRow = 6;
+                    }
+                    else if(drop.getSelectedItem().equals("7r"))
+                    {
+                        selRow = 7;
+                    }
+                    else if(drop.getSelectedItem().equals("8r"))
+                    {
+                        selRow = 8;
+                    }
+                    else if(drop.getSelectedItem().equals("9r"))
+                    {
+                        selRow = 9;
+                    }
+
+                    if(selRow == 1)
+                    {
+                        selRow1 = 118;
+                    }
+                    else if(selRow == 2)
+                    {
+                        selRow1 = 168;
+                    }
+                    else if(selRow == 3)
+                    {
+                        selRow1 = 218;
+                    }
+                    else if(selRow == 4)
+                    {
+                        selRow1 = 268;
+                    }
+                    else if(selRow == 5)
+                    {
+                        selRow1 = 318;
+                    }
+                    else if(selRow == 6)
+                    {
+                        selRow1 = 368;
+                    }
+                    else if(selRow == 7)
+                    {
+                        selRow1 = 418;
+                    }
+                    else if(selRow == 8)
+                    {
+                        selRow1 = 468;
+                    }
+                    else if(selRow == 9)
+                    {
+                        selRow1 = 518;
+                    }
+
+                    if(drop2.getSelectedItem().equals("1c"))
+                    {
+                        selCol = 1;
+                    }
+                    else if(drop2.getSelectedItem().equals("2c"))
+                    {
+                        selCol = 2;
+                    }
+                    else if(drop2.getSelectedItem().equals("3c"))
+                    {
+                        selCol = 3;
+                    }
+                    else if(drop2.getSelectedItem().equals("4c"))
+                    {
+                        selCol = 4;
+                    }
+                    else if(drop2.getSelectedItem().equals("5c"))
+                    {
+                        selCol = 5;
+                    }
+                    else if(drop2.getSelectedItem().equals("6c"))
+                    {
+                        selCol = 6;
+                    }
+                    else if(drop2.getSelectedItem().equals("7c"))
+                    {
+                        selCol = 7;
+                    }
+                    else if(drop2.getSelectedItem().equals("8c"))
+                    {
+                        selCol = 8;
+                    }
+                    else if(drop2.getSelectedItem().equals("9c"))
+                    {
+                        selCol = 9;
+                    }
+
+                    if(selCol == 1)
+                    {
+                        selCol1 = 135;
+                    }
+                    else if(selCol == 2)
+                    {
+                        selCol1 = 185;
+                    }
+                    else if(selCol == 3)
+                    {
+                        selCol1 = 235;
+                    }
+                    else if(selCol == 4)
+                    {
+                        selCol1 = 285;
+                    }
+                    else if(selCol == 5)
+                    {
+                        selCol1 = 335;
+                    }
+                    else if(selCol == 6)
+                    {
+                        selCol1 = 385;
+                    }
+                    else if(selCol == 7)
+                    {
+                        selCol1 = 435;
+                    }
+                    else if(selCol == 8)
+                    {
+                        selCol1 = 485;
+                    }
+                    else if(selCol == 9)
+                    {
+                        selCol1 = 535;
+                    }
+
+                    if(drop3.getSelectedItem().equals("1"))
+                    {
+                        selNum = 1;
+                    }
+                    else if(drop3.getSelectedItem().equals("2"))
+                    {
+                        selNum = 2;
+                    }
+                    else if(drop3.getSelectedItem().equals("3"))
+                    {
+                        selNum = 3;
+                    }
+                    else if(drop3.getSelectedItem().equals("4"))
+                    {
+                        selNum = 4;
+                    }
+                    else if(drop3.getSelectedItem().equals("5"))
+                    {
+                        selNum = 5;
+                    }
+                    else if(drop3.getSelectedItem().equals("6"))
+                    {
+                        selNum = 6;
+                    }
+                    else if(drop3.getSelectedItem().equals("7"))
+                    {
+                        selNum = 7;
+                    }
+                    else if(drop3.getSelectedItem().equals("8"))
+                    {
+                        selNum = 8;
+                    }
+                    else if(drop3.getSelectedItem().equals("9"))
+                    {
+                        selNum = 9;
+                    }
+                    g.setColor(Color.BLUE);
+
+                    puzzleArray[selRow-1][selCol-1] = selNum;
+                    g.drawString("" + selNum,selRow1,selCol1);
+                    selNum = 0;
+                    selRow = 0;
+                    selCol = 0;
+                    selRow1 = 0;
+                    selCol1 = 0;
+                }
+
+            }
         }
     }
 }

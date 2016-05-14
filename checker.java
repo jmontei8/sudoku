@@ -12,7 +12,7 @@ public class checker
 
     }
 
-    public boolean check(puzzle currentPuzzle)
+    public boolean[][] check(Puzzle currentPuzzle)
     {
         boolean result;
         boolean[][] correct =  {{true,true,true,true,true,true,true,true,true},
@@ -25,8 +25,9 @@ public class checker
                                 {true,true,true,true,true,true,true,true,true},
                                 {true,true,true,true,true,true,true,true,true}};
                                 
-        int[][] solution = currentPuzzle.getSolution();
-        int[][] userPuzzle = currentPuzzle.getUserPuzzle();
+        
+        int[][] userPuzzle = currentPuzzle.choosePuzzle();
+        int[][] solution = currentPuzzle.chooseSolution(userPuzzle);
         for(int r = 0; r<9; r++)
         {
             for(int c = 0; r<9; c++)
