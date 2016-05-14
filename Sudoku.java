@@ -117,7 +117,7 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
 
         puzzleArray=puz.getPuzzle();
         
-        Sound testsong = new Sound("Video_Game_Themes_-_Killer_Instinct.mid");
+        Sound testsong = new Sound("Relaxing Instrumental Music- soft & calm background music - relaxdaily N°080.mp3.mid");
         testsong.playSoundOnce();
     }
 
