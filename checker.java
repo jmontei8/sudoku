@@ -5,41 +5,29 @@
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class checker
+public class Checker
 {
-    public checker()
+    public Checker()
     {
 
     }
 
-    public boolean[][] check(Puzzle currentPuzzle)
+    public boolean checkPuzzle(Puzzle currentPuzzle)
     {
-        boolean result;
-        boolean[][] correct =  {{true,true,true,true,true,true,true,true,true},
-                                {true,true,true,true,true,true,true,true,true},
-                                {true,true,true,true,true,true,true,true,true},
-                                {true,true,true,true,true,true,true,true,true},
-                                {true,true,true,true,true,true,true,true,true},
-                                {true,true,true,true,true,true,true,true,true},
-                                {true,true,true,true,true,true,true,true,true},
-                                {true,true,true,true,true,true,true,true,true},
-                                {true,true,true,true,true,true,true,true,true}};
+        boolean result = true;
                                 
         
-        int[][] userPuzzle = currentPuzzle.choosePuzzle();
-        int[][] solution = currentPuzzle.chooseSolution(userPuzzle);
+        int[][] solution = currentPuzzle.chooseSolution(currentPuzzle.getPuzzle());
         for(int r = 0; r<9; r++)
         {
             for(int c = 0; r<9; c++)
             {
-                if(solution[r][c] != userPuzzle[r][c])
+                if(solution[r][c] != currentPuzzle.getPuzzle()[r][c])
                 {
                     result = false;
-                    correct[r][c] = false;
-                    
                 }
             }
         }
-        return correct;
+        return result;
     }
 }
