@@ -15,18 +15,17 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
     private Button playBtn;
     private Button startBtn;
     private Button enterBtn;
-    private Button button4;
+    private Button restartBtn;
     private Button button5;
     private Button button6;
     private boolean gameStarted;
     private boolean enterAllowed;
-    private TextField textField1;
-    private TextField textField2;
-    private TextField textField3;
+    private boolean canReset;
     private Choice drop = new Choice();
     private Choice drop2 = new Choice();
     private Choice drop3 = new Choice();
     private int[][] puzzleArray=new int[9][9];
+    private int[][] restartArray = new int[9][9];
     private Puzzle puz=new Puzzle();
     private boolean[][] takenSpot = new boolean[9][9];
     private int selRow;
@@ -84,6 +83,10 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         add(enterBtn);
         enterBtn.addActionListener(this);
 
+        restartBtn = new Button("RESTART");
+        add(restartBtn);
+        restartBtn.addActionListener(this);
+
         drop.addItem("1r");
         drop.addItem("2r");
         drop.addItem("3r");
@@ -116,7 +119,8 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         add(drop3);
 
         puzzleArray=puz.getPuzzle();
-        
+        takenSpot = puz.preTaken(puzzleArray);
+        restartArray = puzzleArray.clone();
         Sound testsong = new Sound("Relaxing Instrumental Music- soft & calm background music - relaxdaily N°080.mp3.mid");
         testsong.playSoundOnce();
     }
@@ -173,12 +177,18 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         }
         if(ae.getSource().equals(enterBtn))
         {
+            selection = 1;
+            screen = 1;
+            canReset = false;
             enterAllowed = true;
+        }
+        if(ae.getSource().equals(restartBtn))
+        {
+            canReset = true;
             if(gameStarted == true)
             {
                 selection = 1;
             }
-
         }
         repaint(); 
     }
@@ -189,6 +199,7 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         {
             startBtn.setLocation(-100,-100);
             enterBtn.setLocation(-100,-100);
+            restartBtn.setLocation(-100,-100);
             drop.setLocation(-100,-100);
             drop2.setLocation(-100,-100);
             drop3.setLocation(-100,-100);
@@ -295,6 +306,7 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
 
             startBtn.setLocation(465, 15);
             enterBtn.setLocation(600, 350);
+            restartBtn.setLocation(550, 15);
             if(selection == 1)
             {
                 int x=118;
@@ -322,148 +334,148 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
                     selCol1 = 0;
                     if(drop.getSelectedItem().equals("1r"))
                     {
-                        selRow = 1;
+                        selRow = 0;
                     }
                     else if(drop.getSelectedItem().equals("2r"))
                     {
-                        selRow = 2;
+                        selRow = 1;
                     }
                     else if(drop.getSelectedItem().equals("3r"))
                     {
-                        selRow = 3;
+                        selRow = 2;
                     }
                     else if(drop.getSelectedItem().equals("4r"))
                     {
-                        selRow = 4;
+                        selRow = 3;
                     }
                     else if(drop.getSelectedItem().equals("5r"))
                     {
-                        selRow = 5;
+                        selRow = 4;
                     }
                     else if(drop.getSelectedItem().equals("6r"))
                     {
-                        selRow = 6;
+                        selRow = 5;
                     }
                     else if(drop.getSelectedItem().equals("7r"))
                     {
-                        selRow = 7;
+                        selRow = 6;
                     }
                     else if(drop.getSelectedItem().equals("8r"))
                     {
-                        selRow = 8;
+                        selRow = 7;
                     }
                     else if(drop.getSelectedItem().equals("9r"))
                     {
-                        selRow = 9;
+                        selRow = 8;
                     }
 
-                    if(selRow == 1)
+                    if(selRow == 0)
                     {
                         selRow1 = 118;
                     }
-                    else if(selRow == 2)
+                    else if(selRow == 1)
                     {
                         selRow1 = 168;
                     }
-                    else if(selRow == 3)
+                    else if(selRow == 2)
                     {
                         selRow1 = 218;
                     }
-                    else if(selRow == 4)
+                    else if(selRow == 3)
                     {
                         selRow1 = 268;
                     }
-                    else if(selRow == 5)
+                    else if(selRow == 4)
                     {
                         selRow1 = 318;
                     }
-                    else if(selRow == 6)
+                    else if(selRow == 5)
                     {
                         selRow1 = 368;
                     }
-                    else if(selRow == 7)
+                    else if(selRow == 6)
                     {
                         selRow1 = 418;
                     }
-                    else if(selRow == 8)
+                    else if(selRow == 7)
                     {
                         selRow1 = 468;
                     }
-                    else if(selRow == 9)
+                    else if(selRow == 8)
                     {
                         selRow1 = 518;
                     }
 
                     if(drop2.getSelectedItem().equals("1c"))
                     {
-                        selCol = 1;
+                        selCol = 0;
                     }
                     else if(drop2.getSelectedItem().equals("2c"))
                     {
-                        selCol = 2;
+                        selCol = 1;
                     }
                     else if(drop2.getSelectedItem().equals("3c"))
                     {
-                        selCol = 3;
+                        selCol = 2;
                     }
                     else if(drop2.getSelectedItem().equals("4c"))
                     {
-                        selCol = 4;
+                        selCol = 3;
                     }
                     else if(drop2.getSelectedItem().equals("5c"))
                     {
-                        selCol = 5;
+                        selCol = 4;
                     }
                     else if(drop2.getSelectedItem().equals("6c"))
                     {
-                        selCol = 6;
+                        selCol = 5;
                     }
                     else if(drop2.getSelectedItem().equals("7c"))
                     {
-                        selCol = 7;
+                        selCol = 6;
                     }
                     else if(drop2.getSelectedItem().equals("8c"))
                     {
-                        selCol = 8;
+                        selCol = 7;
                     }
                     else if(drop2.getSelectedItem().equals("9c"))
                     {
-                        selCol = 9;
+                        selCol = 8;
                     }
 
-                    if(selCol == 1)
+                    if(selCol == 0)
                     {
                         selCol1 = 135;
                     }
-                    else if(selCol == 2)
+                    else if(selCol == 1)
                     {
                         selCol1 = 185;
                     }
-                    else if(selCol == 3)
+                    else if(selCol == 2)
                     {
                         selCol1 = 235;
                     }
-                    else if(selCol == 4)
+                    else if(selCol == 3)
                     {
                         selCol1 = 285;
                     }
-                    else if(selCol == 5)
+                    else if(selCol == 4)
                     {
                         selCol1 = 335;
                     }
-                    else if(selCol == 6)
+                    else if(selCol == 5)
                     {
                         selCol1 = 385;
                     }
-                    else if(selCol == 7)
+                    else if(selCol == 6)
                     {
                         selCol1 = 435;
                     }
-                    else if(selCol == 8)
+                    else if(selCol == 7)
                     {
                         selCol1 = 485;
                     }
-                    else if(selCol == 9)
+                    else if(selCol == 8)
                     {
                         selCol1 = 535;
                     }
@@ -504,10 +516,13 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
                     {
                         selNum = 9;
                     }
-                    g.setColor(Color.BLUE);
 
-                    puzzleArray[selRow-1][selCol-1] = selNum;
-                    g.drawString("" + selNum,selRow1,selCol1);
+                    x = 118;
+                    y = 135;
+                    if(takenSpot[selCol][selRow] != true)
+                    {
+                        puzzleArray[selCol][selRow] = selNum;
+                    }
                     selNum = 0;
                     selRow = 0;
                     selCol = 0;
@@ -515,6 +530,20 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
                     selCol1 = 0;
                 }
 
+                if(canReset == true)
+                {
+                    for(int myX = 0; myX < 9; myX ++)
+                    {
+                        for(int myC = 0; myC < 9; myC++)
+                        {
+                            if(takenSpot[myX][myC] != true)
+                            {
+                                puzzleArray[myX][myC] = 0;
+                                
+                            }
+                        }
+                    }
+                }
             }
         }
     }

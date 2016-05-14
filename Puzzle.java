@@ -11,6 +11,16 @@ public class Puzzle
     int[][] base;
     int[][] solution;
     int[][] user;
+    
+    private boolean[][] taken = {{false,false,false,false,false,false,false,false,false},
+            {false,false,false,false,false,false,false,false,false},
+            {false,false,false,false,false,false,false,false,false},
+            {false,false,false,false,false,false,false,false,false},
+            {false,false,false,false,false,false,false,false,false},
+            {false,false,false,false,false,false,false,false,false},
+            {false,false,false,false,false,false,false,false,false},
+            {false,false,false,false,false,false,false,false,false},
+            {false,false,false,false,false,false,false,false,false}};
     private int[][] puzzle1={{0,2,0,0,5,0,7,0,0},
             {9,0,0,7,0,1,0,6,0},
             {0,0,7,0,0,0,0,0,5},
@@ -178,6 +188,20 @@ public class Puzzle
         else{
             return null;
         }
+    }
+    public boolean[][] preTaken(int[][] puzzle)
+    {
+        for(int x = 0; x < 9; x++)
+        {
+            for(int c = 0; c < 9; c++)
+            {
+                if(puzzle[x][c] > 0)
+                {
+                    taken[x][c] = true;
+                }
+            }
+        }
+        return taken;
     }
     public void updateUser(int[][] p)
     {
