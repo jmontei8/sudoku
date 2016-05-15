@@ -20,11 +20,13 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
     private boolean gameStarted;
     private boolean enterAllowed;
     private boolean canReset;
+    private boolean checkWin;
     private Choice drop = new Choice();
     private Choice drop2 = new Choice();
     private Choice drop3 = new Choice();
     private int[][] puzzleArray=new int[9][9];
     private int[][] restartArray = new int[9][9];
+    private int[][] solutionArray = new int[9][9];
     private Puzzle puz=new Puzzle();
     private boolean[][] takenSpot = new boolean[9][9];
     private int selRow;
@@ -32,10 +34,10 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
     private int selNum;
     private int selCol1;
     private int selRow1;
+    private int count;
     private AudioClip song;
     private URL songPath;
     private boolean solvedPuzzle;
-    private Checker myCheck = new Checker();
     public class Sound // Holds one audio file
     {
         private AudioClip song; // Sound player
@@ -72,7 +74,7 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         selection = 0;
         num = 1;
         solvedPuzzle = false;
-        
+
         playBtn = new Button("PLAY");
         add(playBtn);
         playBtn.addActionListener(this); 
@@ -88,10 +90,10 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         restartBtn = new Button("RESTART");
         add(restartBtn);
         restartBtn.addActionListener(this);
-        
+
         submitBtn = new Button("SUBMIT");
         add(submitBtn);
-        restartBtn.addActionListener(this);
+        submitBtn.addActionListener(this);
 
         drop.addItem("1r");
         drop.addItem("2r");
@@ -127,6 +129,7 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         puzzleArray=puz.getPuzzle();
         takenSpot = puz.preTaken(puzzleArray);
         restartArray = puzzleArray.clone();
+        solutionArray = puz.chooseSolution(puzzleArray);
         Sound testsong = new Sound("1Relaxing Instrumental Music- soft & calm background music - relaxdaily N°080.mp3.mid");
         testsong.playSoundOnce();
     }
@@ -198,7 +201,8 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         }
         if(ae.getSource().equals(submitBtn))
         {
-            solvedPuzzle = myCheck.checkPuzzle(puz);
+            selection = 1;
+            checkWin = true;
         }
         repaint(); 
     }
@@ -317,8 +321,8 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
 
             startBtn.setLocation(465, 15);
             enterBtn.setLocation(600, 350);
-            submitBtn.setLocation(650, 15);
             restartBtn.setLocation(550, 15);
+            submitBtn.setLocation(650,15);
             if(selection == 1)
             {
                 int x=118;
@@ -540,6 +544,7 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
                     selCol = 0;
                     selRow1 = 0;
                     selCol1 = 0;
+
                 }
 
                 if(canReset == true)
@@ -555,17 +560,26 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
                         }
                     }
                 }
-                
-                if(solvedPuzzle == true)
+
+                if(checkWin == true)
+                {
+                    for(int as = 0; as < 9; as ++)
+                    {
+                        for(int sa = 0; sa < 9; sa++)
+                        {
+                            if(solutionArray[as][sa] == puzzleArray[as][sa])
+                            {
+                                count++;
+                            }
+                        }
+                    }
+                }
+                if(count == 81)
                 {
                     screen = 2;
                 }
             }
-        }
-        if(screen == 2)
-        {
-            g.setFont(new Font("TimesRoman", Font.BOLD, 100)); 
-            g.drawString("YOU WIN",10,10);
+
         }
     }
 }
