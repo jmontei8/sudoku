@@ -276,13 +276,13 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
             num = 1;
             for(int x = 105; x < 555; x+= 50)
             {
-                g.drawString("Row " + num + "r", x,95);
+                g.drawString("Col " + num + "r", x,95);
                 num++;
             }
             num = 1;
             for(int x = 130; x < 560; x+= 50)
             {
-                g.drawString("Column " + num + "c", 30,x);
+                g.drawString("Row " + num + "c", 30,x);
                 num++;
             }
             g.drawLine(100,101,550,101);
@@ -535,9 +535,9 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
 
                     x = 118;
                     y = 135;
-                    if(takenSpot[selCol][selRow] != true)
+                    if(takenSpot[selRow][selCol] != true)
                     {
-                        puzzleArray[selCol][selRow] = selNum;
+                        puzzleArray[selRow][selCol] = selNum;
                     }
                     selNum = 0;
                     selRow = 0;
@@ -553,9 +553,9 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
                     {
                         for(int myC = 0; myC < 9; myC++)
                         {
-                            if(takenSpot[myX][myC] != true)
+                            if(takenSpot[myC][myX] != true)
                             {
-                                puzzleArray[myX][myC] = 0;
+                                puzzleArray[myC][myX] = 0;
                             }
                         }
                     }
