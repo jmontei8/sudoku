@@ -276,13 +276,13 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
             num = 1;
             for(int x = 105; x < 555; x+= 50)
             {
-                g.drawString("Col " + num + "r", x,95);
+                g.drawString("Col " + num + "c", x,95);
                 num++;
             }
             num = 1;
             for(int x = 130; x < 560; x+= 50)
             {
-                g.drawString("Row " + num + "c", 30,x);
+                g.drawString("Row " + num + "r", 30,x);
                 num++;
             }
             g.drawLine(100,101,550,101);
