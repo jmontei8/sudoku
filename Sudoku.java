@@ -130,7 +130,7 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         takenSpot = puz.preTaken(puzzleArray);
         restartArray = puzzleArray.clone();
         solutionArray = puz.chooseSolution(puzzleArray);
-        Sound testsong = new Sound("1Relaxing Instrumental Music- soft & calm background music - relaxdaily N°080.mp3.mid");
+        Sound testsong = new Sound("KissTheRain.mid");
         testsong.playSoundOnce();
     }
 
@@ -202,6 +202,7 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         if(ae.getSource().equals(submitBtn))
         {
             selection = 1;
+            screen = 2;
             checkWin = true;
         }
         repaint(); 
@@ -580,6 +581,19 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
                 }
             }
 
+        }
+        if(screen == 2)
+        {
+            remove(startBtn);
+            remove(restartBtn);
+            remove(enterBtn);
+            remove(submitBtn);
+            remove(playBtn);
+            remove(drop);
+            remove(drop2);
+            remove(drop3);
+            g.setFont(new Font("TimesRoman", Font.BOLD, 60)); 
+            g.drawString("CONGRATS YOU WIN",60,275);
         }
     }
 }
