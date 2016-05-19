@@ -201,9 +201,20 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         }
         if(ae.getSource().equals(submitBtn))
         {
-            selection = 1;
-            screen = 2;
-            checkWin = true;
+            for(int as = 0; as < 9; as ++)
+            {
+                for(int sa = 0; sa < 9; sa++)
+                {
+                    if(solutionArray[as][sa] == puzzleArray[as][sa])
+                    {
+                        count++;
+                    }
+                }
+            }
+            if (count == 81)
+            {
+                screen = 2;
+            }
         }
         repaint(); 
     }
@@ -562,26 +573,28 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
                     }
                 }
 
-                if(checkWin == true)
+                /*if(checkWin == true)
                 {
-                    for(int as = 0; as < 9; as ++)
-                    {
-                        for(int sa = 0; sa < 9; sa++)
-                        {
-                            if(solutionArray[as][sa] == puzzleArray[as][sa])
-                            {
-                                count++;
-                            }
-                        }
-                    }
+                for(int as = 0; as < 9; as ++)
+                {
+                for(int sa = 0; sa < 9; sa++)
+                {
+                if(solutionArray[as][sa] == puzzleArray[as][sa])
+                {
+                count++;
+                }
+                }
+                }
                 }
                 if(count == 81)
                 {
-                    screen = 2;
-                }
+                screen = 2;
+                }*/
             }
 
         }
+
+
         if(screen == 2)
         {
             remove(startBtn);
@@ -596,4 +609,6 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
             g.drawString("CONGRATS YOU WIN",60,275);
         }
     }
+
+  
 }
