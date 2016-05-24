@@ -6,6 +6,12 @@ import java.awt.Font;
 import java.applet.*;
 import java.net.*;
 
+/** Java Doc Jovan Monteiro, John Tan
+ * This applet gets the methods (arrray,solution to the array, and taken array (which indexs are taken)
+ * Displays the puzzle and gets the user input and displays it
+ * if the user completes the puzzle correctly then it displays a message to do so
+ * Otherwise the user must complete or restart the puzzle
+ */
 public class Sudoku extends Applet implements ActionListener, MouseListener, MouseMotionListener
 {
     private int screen;
@@ -344,8 +350,6 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
             {
                 draw(0,0,118,135,g);
 
-                g.drawString("HELLO",100,100);
-
                 if(enterAllowed == true)
                 {
                     selNum = 0;
@@ -606,38 +610,38 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         g.setFont(new Font("TimesRoman", Font.BOLD, 30)); 
         if(r<9 && c<9)
         {
-        if(r==8 &&c==8)
-        {
+            if(r==8 &&c==8)
+            {
+                if(puzzleArray[r][c]!=0)
+                {
+                    g.drawString(""+puzzleArray[r][c], x, y);
+                }
+            }
             if(puzzleArray[r][c]!=0)
             {
-            g.drawString(""+puzzleArray[r][c], x, y);
-        }
-        }
-        if(puzzleArray[r][c]!=0)
-        {
-            int num=puzzleArray[r][c];
-            g.drawString(""+num, x, y);
-        }
-        c++;
-
-        if(c==9)
-        {
-            if(r<9)
-            {
-                r+=1;
-                c=0;
-                x=118;
-                y+=50;
-                draw(r,c,x, y, g);
+                int num=puzzleArray[r][c];
+                g.drawString(""+num, x, y);
             }
-        }
-        else
-        {
-            x+=50;
-            draw(r,c,x,y,g);
-        }
+            c++;
 
+            if(c==9)
+            {
+                if(r<9)
+                {
+                    r+=1;
+                    c=0;
+                    x=118;
+                    y+=50;
+                    draw(r,c,x, y, g);
+                }
+            }
+            else
+            {
+                x+=50;
+                draw(r,c,x,y,g);
+            }
+
+        }
     }
-}
 }
 

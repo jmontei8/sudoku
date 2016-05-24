@@ -1,13 +1,11 @@
 import java.util.*;
 /**
  * Write a description of class Puzzle here.
+ * This class intitalizes the puzzle, solution, and index's that are taken for the sudoku game
  * 
- * @author (your name) 
- * @version (a version number or a date)
  */
 public class Puzzle
 {
-    // instance variables - replace the example below with your own
     int[][] base;
     int[][] solution;
     int[][] user;
@@ -140,20 +138,20 @@ public class Puzzle
             {6,8,1,3,4,2,7,5,9},
             {7,3,4,5,8,9,1,2,6}
         };
-        
-//     private int[][] puzzle5 =
-//         {
-//             {9,1,8,2,3,5,4,6,7},
-//             {3,6,7,8,9,4,5,1,2},
-//             {2,4,5,6,1,7,9,8,3},
-//             {8,7,6,9,2,1,3,4,5},
-//             {1,9,2,4,5,3,6,7,8},
-//             {4,5,3,7,6,8,2,9,1},
-//             {5,2,9,1,7,6,8,3,4},
-//             {6,8,1,3,4,2,7,5,9},
-//             {7,3,4,5,8,9,1,2,0}
-//         };
-// 
+
+    //     private int[][] puzzle5 =
+    //         {
+    //             {9,1,8,2,3,5,4,6,7},
+    //             {3,6,7,8,9,4,5,1,2},
+    //             {2,4,5,6,1,7,9,8,3},
+    //             {8,7,6,9,2,1,3,4,5},
+    //             {1,9,2,4,5,3,6,7,8},
+    //             {4,5,3,7,6,8,2,9,1},
+    //             {5,2,9,1,7,6,8,3,4},
+    //             {6,8,1,3,4,2,7,5,9},
+    //             {7,3,4,5,8,9,1,2,0}
+    //         };
+    // 
     private int[][] puzzle5 =
         {
             {9,0,0,2,3,0,4,0,0},
@@ -264,25 +262,23 @@ public class Puzzle
 
     public void updateUser(int[][] p)
     {
-        // put your code here
         user=p;
 
     }
-
-    public void print()
-    {
-        // put your code here
-        System.out.print("===Here are the arrays===\n");
-        System.out.println(Arrays.deepToString(puzzle1));
-        System.out.println(Arrays.deepToString(solution1));
-        System.out.println(Arrays.deepToString(puzzle2));
-        System.out.println(Arrays.deepToString(solution2));
-        System.out.println(Arrays.deepToString(puzzle3));
-        System.out.println(Arrays.deepToString(solution3));
-        System.out.println(Arrays.deepToString(puzzle4));
-        System.out.println(Arrays.deepToString(solution4));
-        System.out.println(Arrays.deepToString(puzzle5));
-        System.out.println(Arrays.deepToString(solution5));
-
-    }
+    // 
+    //     public void print()
+    //     {
+    //         System.out.print("===Here are the arrays===\n");
+    //         System.out.println(Arrays.deepToString(puzzle1));
+    //         System.out.println(Arrays.deepToString(solution1));
+    //         System.out.println(Arrays.deepToString(puzzle2));
+    //         System.out.println(Arrays.deepToString(solution2));
+    //         System.out.println(Arrays.deepToString(puzzle3));
+    //         System.out.println(Arrays.deepToString(solution3));
+    //         System.out.println(Arrays.deepToString(puzzle4));
+    //         System.out.println(Arrays.deepToString(solution4));
+    //         System.out.println(Arrays.deepToString(puzzle5));
+    //         System.out.println(Arrays.deepToString(solution5));
+    // 
+    //     }
 }
