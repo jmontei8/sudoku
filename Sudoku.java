@@ -38,6 +38,7 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
     private AudioClip song;
     private URL songPath;
     private boolean solvedPuzzle;
+
     public class Sound // Holds one audio file
     {
         private AudioClip song; // Sound player
@@ -201,11 +202,13 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         }
         if(ae.getSource().equals(submitBtn))
         {
+
+            count = 0;
             for(int as = 0; as < 9; as ++)
             {
                 for(int sa = 0; sa < 9; sa++)
                 {
-                    if(solutionArray[as][sa] == puzzleArray[as][sa])
+                    if(puz.chooseSolution(puzzleArray)[as][sa] == puzzleArray[as][sa])
                     {
                         count++;
                     }
@@ -250,6 +253,7 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         }
         if(screen == 1)
         {
+
             playBtn.setLocation(-100,-100);
             setSize(775,585);
             g.setColor(Color.WHITE);
@@ -335,23 +339,12 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
             enterBtn.setLocation(600, 350);
             restartBtn.setLocation(550, 15);
             submitBtn.setLocation(650,15);
+
             if(selection == 1)
             {
-                int x=118;
-                int y=135;
-                for(int r=0; r<9; r++)
-                {
-                    for(int c=0; c<9; c++)
-                    {
-                        if(puzzleArray[r][c]!=0)
-                        {
-                            g.drawString(""+puzzleArray[r][c], x, y);
-                        }
-                        x+=50;
-                    }
-                    x=118;
-                    y+=50;
-                }
+                draw(0,0,118,135,g);
+
+                g.drawString("HELLO",100,100);
 
                 if(enterAllowed == true)
                 {
@@ -545,8 +538,6 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
                         selNum = 9;
                     }
 
-                    x = 118;
-                    y = 135;
                     if(takenSpot[selRow][selCol] != true)
                     {
                         puzzleArray[selRow][selCol] = selNum;
@@ -571,29 +562,28 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
                             }
                         }
                     }
-                }
 
-                /*if(checkWin == true)
-                {
-                for(int as = 0; as < 9; as ++)
-                {
-                for(int sa = 0; sa < 9; sa++)
-                {
-                if(solutionArray[as][sa] == puzzleArray[as][sa])
-                {
-                count++;
+                    /*if(checkWin == true)
+                    {
+                    for(int as = 0; as < 9; as ++)
+                    {
+                    for(int sa = 0; sa < 9; sa++)
+                    {
+                    if(solutionArray[as][sa] == puzzleArray[as][sa])
+                    {
+                    count++;
+                    }
+                    }
+                    }
+                    }
+                    if(count == 81)
+                    {
+                    screen = 2;
+                    }*/
                 }
-                }
-                }
-                }
-                if(count == 81)
-                {
-                screen = 2;
-                }*/
             }
 
         }
-
 
         if(screen == 2)
         {
@@ -610,5 +600,44 @@ public class Sudoku extends Applet implements ActionListener, MouseListener, Mou
         }
     }
 
-  
+    public void draw(int r, int c, int x, int y, Graphics g)
+    {
+
+        g.setFont(new Font("TimesRoman", Font.BOLD, 30)); 
+        if(r<9 && c<9)
+        {
+        if(r==8 &&c==8)
+        {
+            if(puzzleArray[r][c]!=0)
+            {
+            g.drawString(""+puzzleArray[r][c], x, y);
+        }
+        }
+        if(puzzleArray[r][c]!=0)
+        {
+            int num=puzzleArray[r][c];
+            g.drawString(""+num, x, y);
+        }
+        c++;
+
+        if(c==9)
+        {
+            if(r<9)
+            {
+                r+=1;
+                c=0;
+                x=118;
+                y+=50;
+                draw(r,c,x, y, g);
+            }
+        }
+        else
+        {
+            x+=50;
+            draw(r,c,x,y,g);
+        }
+
+    }
 }
+}
+
